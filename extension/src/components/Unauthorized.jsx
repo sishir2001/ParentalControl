@@ -2,7 +2,6 @@ import React from "react";
 import { useSearchParams } from "react-router-dom";
 
 const Unauthorized = () => {
-    // gets link and email address
     const [searchParams, setSearchParams] = useSearchParams();
     // TODO : get the link
     // TODO : get access to camera and take a picture

@@ -1,22 +1,23 @@
-/*global chrome*/
 import "./App.css";
-import { URL } from "./components/Constants";
-import React, { useEffect } from "react";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
+import Unauthorized from "./components/Unauthorized";
+import Login from "./components/auth/Login";
+import LandingPage from "./components/LandingPage";
+import WebCamImage from "./components/WebCamImage";
 
 function App() {
-    // if logged in , then landing page otherwise login page
-    useEffect(() => {
-        // window.location.replace(URL.LANDING_PAGE);
-        chrome.storage.sync.set({ G1: "G1" }, function () {
-            console.log("Value is set to " + "G1");
-        });
-    }, []);
-
-    const renderFunction = () => {
-        return <React.Fragment>Landing Page</React.Fragment>;
-    };
-
-    return renderFunction();
+    return (
+        <div>
+            <MemoryRouter>
+                <Routes>
+                    <Route path="/" element={<LandingPage />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/unauthorized" element={<Unauthorized />} />
+                    <Route path="/imagecapture" element={<WebCamImage />} />
+                </Routes>
+            </MemoryRouter>
+        </div>
+    );
 }
 
 export default App;

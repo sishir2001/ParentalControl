@@ -6,24 +6,27 @@ const restrictedURLS = [
 ];
 
 const currentURL = window.location.hostname;
-console.log(currentURL);
 
 // TODO : retrieve the web-page url and redirect to w3school
 // TODO : first check for login from localStorage and redirect accordingly
 const runFirst = async () => {
     const res = await chrome.storage.sync.get(["GToken"]);
     const age = await chrome.storage.sync.get(["AGE"]);
-    console.log(res.GToken);
-    console.log(currentURL);
+    const email = await chrome.storage.sync.get(["EMAIL"]);
+
     if (res.GToken === undefined) {
         // redirect to localhost website
-        // if (currentURL !== "localhost" && currentURL !== "www.google.com") {
-        //     window.location.replace("http://localhost:5173/");
-        // }
+        if (
+            currentURL !== "localhost" &&
+            currentURL !== "accounts.google.com"
+        ) {
+            window.location.replace("http://localhost:5173/");
+        }
     } else if (restrictedURLS.includes(currentURL)) {
         if (age.AGE === "Below 18") {
+            // TODO : fetch the email
             window.location.replace(
-                `http://localhost:5173/unauthorized?url=${currentURL}`
+                `http://localhost:5173/unauthorized?url=${currentURL}&email=${email.EMAIL}`
             );
         }
     }

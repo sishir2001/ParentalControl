@@ -19,17 +19,35 @@ const Login = () => {
             console.log("Not storing properly");
         }
     };
+
+    const storeEmail = async (response) => {
+        const result = await chrome.storage.sync.set({
+            EMAIL: response.email,
+        });
+        if (result !== undefined) {
+            console.log("Value currently is " + result);
+        } else {
+            console.log("Not storing properly");
+        }
+    };
+
     const onClickLogin = (e) => {
         // TODO : login with google
         chrome.runtime.sendMessage(
             { message: "get_auth_token" },
             function (response) {
-                console.log("Inside Login");
-                console.log(response.token);
-                if (response.token) {
-                    // TODO : store token in storage
-                    storeToken(response);
-                }
+                storeToken(response);
+                // if (response.token) {
+                //     // TODO : store token in storage
+                //     chrome.runtime.sendMessage(
+                //         { message: "get_profile" },
+                //         function (response) {
+                //             if (response.email) {
+                //                 storeEmail(response);
+                //             }
+                //         }
+                //     );
+                // }
             }
         );
     };

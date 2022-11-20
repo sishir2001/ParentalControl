@@ -21,14 +21,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             sendResponse({ token: token });
         });
         return true;
+    } else if (request.message === "get_profile") {
+        chrome.identity.getProfileUserInfo(
+            { accountStatus: "ANY" },
+            function (user_info) {
+                console.log("background script");
+                console.log(user_info);
+                sendResponse({ email: user_info.email });
+            }
+        );
+        return true;
     }
-    // } else if (request.message === "get_profile") {
-    //     chrome.identity.getProfileUserInfo(
-    //         { accountStatus: "ANY" },
-    //         function (user_info) {
-    //             console.log(user_info);
-    //         }
-    //     );
     // } else if (request.message === "get_contacts") {
     //     chrome.identity.getAuthToken({ interactive: true }, function (token) {
     //         let fetch_url = `https://people.googleapis.com/v1/contactGroups/all?maxMembers=20&key=${API_KEY}`;

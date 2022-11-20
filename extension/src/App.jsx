@@ -7,9 +7,7 @@ function App() {
 
     const renderFunction = () => {
         const gauthToken = window.sessionStorage.getItem("GToken");
-        if (gauthToken === undefined) {
-            // login page redirected
-
+        if (gauthToken === null) {
             return (
                 <div>
                     <Login />

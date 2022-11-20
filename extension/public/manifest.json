@@ -1,0 +1,18 @@
+{
+    "manifest_version": 3,
+    "name": "example-extension",
+    "author": "Jaladi Saai Sishir",
+    "version": "1.0.0",
+    "description": "Just learning to make a react app extension",
+    "chrome_url_overrides": {
+        "newtab": "index.html"
+    },
+    "permissions": ["activeTab", "tabs"],
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["check.js"]
+        }
+    ],
+    "incognito": "split"
+}

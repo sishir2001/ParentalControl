@@ -10,9 +10,13 @@ const LandingPage = () => {
     const LoginCheck = async () => {
         // checking whether logged in and user
         const res = await chrome.storage.sync.get([LOCAL_STORAGE_OAUTH]);
-        if (res.key === undefined) {
+        const age = await chrome.storage.sync.get("AGE");
+        console.log("Inside LandingPage");
+        console.log(res.GToken);
+        console.log(age.AGE);
+        if (res.GToken === undefined) {
             navigate("/login");
-        } else {
+        } else if (age.AGE === undefined) {
             // logged in , check for user age
             navigate("/imagecapture");
         }
@@ -21,7 +25,9 @@ const LandingPage = () => {
         LoginCheck();
     }, []);
 
-    return <React.Fragment>Hello There.</React.Fragment>;
+    return (
+        <React.Fragment>Hello There. You Can Continue Browsing</React.Fragment>
+    );
 };
 
 export default LandingPage;

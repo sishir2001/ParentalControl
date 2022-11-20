@@ -4,3 +4,7 @@ export const URL = {
     LANDING_PAGE: `${URL_ROOT}`,
 };
 export const LOCAL_STORAGE_OAUTH = "GToken";
+// export const CLIENT_ID =
+//     "270047348342-81u04vv842230obkl8f44ukemj2k0alu.apps.googleusercontent.com";
+
+// export const API_KEY = "AIzaSyA8BqIaTMSiPdKm5cniPxgqxOnw68GGrYA";

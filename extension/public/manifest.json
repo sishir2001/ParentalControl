@@ -3,15 +3,26 @@
     "name": "example-extension",
     "author": "Jaladi Saai Sishir",
     "version": "1.0.0",
-    "description": "Just learning to make a react app extension",
+    "description": "Parental Control Extension",
     "chrome_url_overrides": {
         "newtab": "index.html"
     },
-    "permissions": ["tabs", "activeTab", "storage"],
+    "permissions": ["tabs", "activeTab", "storage", "identity"],
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
             "js": ["check.js"]
         }
-    ]
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "action": {
+        "default_title": "Parental Control extension"
+    },
+    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApCBm5ZiKOrD2RItelmnDSCySy3mbVO9ssIqYdL2mnH+LtjH/Sv4Mems5VxFWUYBNYuDbzD7y3wGcP6T917VuYe0VPLsCF6bjJ/dNwiCScS0plJBSwqBdqnkajVdfkqElftGopeqj/WqPuMUAHIOZCaunh5IgLnML1P2RH4GNKpqyy1/Uh6gcIQsnyprKq9AhL/hI27cQD6ap762T1Q1c+tvllRJHQFn7dCvNjPBDsx4Fm5dTwrF3JYRNcABNoO7p1Mie4md7Ky9Zn86mKw17YkT1bR9kx6ZmyQB2e3H8I9XAH0XEb1wLI3En/roanIti7dUExze9FwAcZUlRTvmecQIDAQAB",
+    "oauth2": {
+        "client_id": "270047348342-81u04vv842230obkl8f44ukemj2k0alu.apps.googleusercontent.com",
+        "scopes": ["profile email"]
+    }
 }

@@ -6,19 +6,28 @@ import { useNavigate } from "react-router-dom";
 
 const WebCamImage = () => {
     const [img, setImg] = useState("");
-    const [goLanding, setGoLanding] = useState(false);
+    const [takeSS, setTakeSS] = useState(false);
     const [response, setResponse] = useState(null);
     const navigate = useNavigate();
     const webCamRef = useRef();
 
-    const storeAge = async (age) => {
-        const result = await chrome.storage.sync.set({
-            AGE: age,
-        });
-        if (result !== undefined) {
-            console.log("Value currently is " + result);
-        } else {
-            console.log("Not storing age properly");
+    const storeAge = (age) => {
+        let isFinish = true;
+        chrome.storage.sync.set(
+            {
+                AGE: age,
+            },
+            function (result) {
+                if (result !== undefined) {
+                    console.log("Value currently is " + result);
+                } else {
+                    console.log("Not storing age properly");
+                    isFinish = false;
+                }
+            }
+        );
+        if (!isFinish) {
+            storeAge(age);
         }
     };
 
@@ -26,24 +35,28 @@ const WebCamImage = () => {
         const headers = {
             "Content-Type": "multipart/form-data",
         };
-        axios
-            .post(
-                "https://parentalmonitoringsystembknd.herokuapp.com/age",
-                {
-                    image: img,
-                },
-                {
-                    headers: headers,
-                }
-            )
-            .then((res, err) => {
-                if (!err) {
-                    console.log(res);
-                    // TODO : store age in localstorage
-                    storeAge(res.data.age);
-                    setResponse(res.data);
-                }
-            });
+        if (img !== "") {
+            axios
+                .post(
+                    "https://parentalmonitoringsystembknd.herokuapp.com/age",
+                    {
+                        image: img,
+                    },
+                    {
+                        headers: headers,
+                    }
+                )
+                .then((res, err) => {
+                    if (!err) {
+                        console.log(res);
+                        // TODO : store age in localstorage
+                        storeAge(res.data.age);
+                        setResponse(res.data);
+                    }
+                });
+        } else {
+            setTakeSS(!takeSS);
+        }
     };
 
     // useEffect(() => {
@@ -52,15 +65,20 @@ const WebCamImage = () => {
     //     }, 3000);
     // }, [goLanding]);
 
-    // run only once when the page renders
+    useEffect(() => {
+        setTakeSS(!takeSS);
+    }, []);
+    // run when face is not detected
     useEffect(() => {
         // run the below logic after 3 seconds
         setTimeout(() => {
             // capture atleast 50 images
             const imageSrc = webCamRef.current.getScreenshot();
+            console.log("Image : ");
+            console.log(imageSrc);
             setImg(JSON.stringify(imageSrc).split(",")[1]);
         }, 3000);
-    }, []);
+    }, [takeSS]);
 
     useEffect(() => {
         // TODO : call the api endpoint for age verification
@@ -86,7 +104,8 @@ const WebCamImage = () => {
             if (response.message === "successfully detected") {
                 res = response.age;
             } else {
-                res = "Error occured !";
+                res = "Error occured ! , Re-capturing the image";
+                setTakeSS(!takeSS);
             }
         }
         return <div>{res}</div>;
@@ -94,13 +113,13 @@ const WebCamImage = () => {
     const renderButton = () => {
         if (response && response.message === "successfully detected") {
             return (
-                <button
-                    onClick={() => {
-                        navigate("/");
-                    }}
+                <h1
+                // onClick={() => {
+                //     navigate("/");
+                // }}
                 >
-                    Continue Browsing
-                </button>
+                    Continue Browsing ... !
+                </h1>
             );
         }
     };

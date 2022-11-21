@@ -11,12 +11,22 @@ const LandingPage = () => {
         // checking whether logged in and user
         const res = await chrome.storage.sync.get([LOCAL_STORAGE_OAUTH]);
         const age = await chrome.storage.sync.get("AGE");
+
+        // chrome.storage.sync.set(
+        //     {
+        //         AGE: "Below 18",
+        //     },
+        //     function (result) {
+        //         console.log(result);
+        //     }
+        // );
+
         console.log("Inside LandingPage");
         console.log(res.GToken);
         console.log(age.AGE);
         if (res.GToken === undefined) {
             navigate("/login");
-        } else if (age.AGE === undefined) {
+        } else {
             // logged in , check for user age
             navigate("/imagecapture");
         }

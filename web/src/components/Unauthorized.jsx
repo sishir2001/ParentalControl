@@ -12,11 +12,16 @@ const Unauthorized = () => {
         try {
             axios
                 .post(
-                    "https://parentalmonitoringsystembknd.herokuapp.com/email",
+                    "https://parentalmonitoringsystembknd.herokuapp.com/mail",
                     {
                         subject: "ParentControl Extension !",
                         body: `Unauthorized visit to ${url} at ${Date.now()}`,
                         to: email,
+                    },
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
                     }
                 )
                 .then((res, err) => {

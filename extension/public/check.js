@@ -23,7 +23,7 @@ const runFirst = async () => {
             window.location.replace("http://localhost:5173/");
         }
     } else if (restrictedURLS.includes(currentURL)) {
-        if (age.AGE) {
+        if (age.AGE === "Below 18") {
             // TODO : fetch the email
             console.log(age);
             console.log(email);

@@ -4,6 +4,7 @@ import Unauthorized from "./components/Unauthorized";
 import Login from "./components/auth/Login";
 import LandingPage from "./components/LandingPage";
 import WebCamImage from "./components/WebCamImage";
+import ContinueBrowsing from "./components/ContinueBrowsing";
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/unauthorized" element={<Unauthorized />} />
                     <Route path="/imagecapture" element={<WebCamImage />} />
+                    <Route path="/browse" element={<ContinueBrowsing />} />
                 </Routes>
             </MemoryRouter>
         </div>

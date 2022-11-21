@@ -23,8 +23,10 @@ const runFirst = async () => {
             window.location.replace("http://localhost:5173/");
         }
     } else if (restrictedURLS.includes(currentURL)) {
-        if (age.AGE === "Below 18") {
+        if (age.AGE) {
             // TODO : fetch the email
+            console.log(age);
+            console.log(email);
             window.location.replace(
                 `http://localhost:5173/unauthorized?url=${currentURL}&email=${email.EMAIL}`
             );

@@ -17,13 +17,8 @@ const WebCamImage = () => {
             {
                 AGE: age,
             },
-            function (result) {
-                if (result !== undefined) {
-                    console.log("Value currently is " + result);
-                } else {
-                    console.log("Not storing age properly");
-                    isFinish = false;
-                }
+            function () {
+                console.log("Value currently is " + age);
             }
         );
         if (!isFinish) {
@@ -35,7 +30,7 @@ const WebCamImage = () => {
         const headers = {
             "Content-Type": "multipart/form-data",
         };
-        if (img !== "") {
+        try {
             axios
                 .post(
                     "https://parentalmonitoringsystembknd.herokuapp.com/age",
@@ -54,39 +49,44 @@ const WebCamImage = () => {
                         setResponse(res.data);
                     }
                 });
-        } else {
-            setTakeSS(!takeSS);
+        } catch (e) {
+            console.log(e);
         }
     };
 
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         navigate("/");
-    //     }, 3000);
-    // }, [goLanding]);
+    const captureImage = () => {
+        let isFinish = true;
+        try {
+            const imageSrc = webCamRef.current.getScreenshot();
+            console.log("Image : ");
+            console.log(imageSrc);
+            setImg(JSON.stringify(imageSrc).split(",")[1]);
+        } catch (e) {
+            isFinish = false;
+        }
+        if (!isFinish) captureImage();
+    };
 
+    // take picture after few seconds
     useEffect(() => {
-        setTakeSS(!takeSS);
+        setTakeSS(true);
     }, []);
     // run when face is not detected
     useEffect(() => {
         // run the below logic after 3 seconds
         setTimeout(() => {
             // capture atleast 50 images
-            const imageSrc = webCamRef.current.getScreenshot();
-            console.log("Image : ");
-            console.log(imageSrc);
-            setImg(JSON.stringify(imageSrc).split(",")[1]);
+            captureImage();
         }, 3000);
     }, [takeSS]);
 
     useEffect(() => {
         // TODO : call the api endpoint for age verification
-        sendPicToAPI();
-        // if (res.message === "successfully detected") {
-        //     // TODO : store the age in localstorage
-        // }
-        // TODO : if successfull , store the response in store in the localstorage for chrome extensions
+        if (img !== null && img !== undefined && img !== "") {
+            sendPicToAPI();
+        } else {
+            setTakeSS(!takeSS);
+        }
     }, [img]);
 
     const videoConstraints = {
@@ -113,13 +113,13 @@ const WebCamImage = () => {
     const renderButton = () => {
         if (response && response.message === "successfully detected") {
             return (
-                <h1
-                // onClick={() => {
-                //     navigate("/");
-                // }}
+                <button
+                    onClick={() => {
+                        navigate("/browse");
+                    }}
                 >
                     Continue Browsing ... !
-                </h1>
+                </button>
             );
         }
     };
